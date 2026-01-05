@@ -1,0 +1,8 @@
+{
+  "name": "CareerLab | AI-Powered Career Solutions",
+  "description": "Premium career optimization services including CV writing, CV review, and LinkedIn optimization powered by AI and expert review to help professionals secure global roles.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
