@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -11,7 +13,8 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleOpenKeySelector = async () => {
+  const handleOpenKeySelector = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     try {
       if (typeof window !== 'undefined' && (window as any).aistudio) {
         await (window as any).aistudio.openSelectKey();
@@ -21,11 +24,24 @@ const Navbar: React.FC = () => {
     }
   };
 
+  const navLinks = [
+    { name: 'Services', href: '#services' },
+    { name: 'Pricing', href: '#pricing' },
+    { name: 'Why Us', href: '#features' },
+    { name: 'FAQ', href: '#faq' },
+  ];
+
+  const scrollTo = (id: string) => {
+    setIsMenuOpen(false);
+    const el = document.querySelector(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/80 backdrop-blur-lg border-b border-slate-200 py-4 shadow-sm' : 'bg-transparent py-6'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled || isMenuOpen ? 'bg-white border-b border-slate-200 py-4 shadow-sm' : 'bg-transparent py-6'}`}>
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
               <svg className="w-9 h-9 text-slate-900" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M25 15 L75 15 L95 45 L50 90 L5 45 Z" />
@@ -41,10 +57,17 @@ const Navbar: React.FC = () => {
             <span className="text-2xl font-bold font-display text-slate-900 tracking-tight">CareerLab</span>
           </div>
           
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-10">
-            <a href="#services" className="text-slate-600 hover:text-black transition-colors text-sm font-medium">Services</a>
-            <a href="#pricing" className="text-slate-600 hover:text-black transition-colors text-sm font-medium">Pricing</a>
-            <a href="#features" className="text-slate-600 hover:text-black transition-colors text-sm font-medium">Why Us</a>
+            {navLinks.map(link => (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                className="text-slate-600 hover:text-black transition-colors text-sm font-medium"
+              >
+                {link.name}
+              </a>
+            ))}
             
             <button 
               onClick={handleOpenKeySelector}
@@ -58,13 +81,14 @@ const Navbar: React.FC = () => {
             </button>
 
             <button 
-              onClick={() => document.getElementById('get-started')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => scrollTo('#get-started')}
               className="px-6 py-2.5 bg-black text-white rounded-full font-semibold text-sm transition-all duration-300 hover:bg-slate-800 hover:scale-[1.03] active:scale-[0.97] shadow-lg shadow-black/25"
             >
-              Get Started Now
+              Get Started
             </button>
           </div>
 
+          {/* Mobile Nav Trigger */}
           <div className="md:hidden flex items-center gap-4">
             <button 
               onClick={handleOpenKeySelector}
@@ -75,14 +99,44 @@ const Navbar: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </button>
-            <button className="text-slate-900 p-2 hover:bg-slate-100 rounded-lg transition-colors">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-slate-900 p-2 hover:bg-slate-100 rounded-lg transition-colors z-[60]"
+            >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                {isMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
               </svg>
             </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 bg-white z-50 pt-24 px-6 md:hidden animate-in fade-in slide-in-from-top duration-300">
+          <div className="flex flex-col gap-8 items-center text-center">
+            {navLinks.map(link => (
+              <button 
+                key={link.name} 
+                onClick={() => scrollTo(link.href)}
+                className="text-2xl font-bold text-slate-900 hover:text-slate-600 transition-colors"
+              >
+                {link.name}
+              </button>
+            ))}
+            <button 
+              onClick={() => scrollTo('#get-started')}
+              className="w-full py-4 bg-black text-white rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl"
+            >
+              Get Started Now
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

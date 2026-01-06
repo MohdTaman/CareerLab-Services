@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const Footer: React.FC = () => {
@@ -32,6 +33,7 @@ const Footer: React.FC = () => {
               <li><a href="#service-cv-writing" className="hover:text-black transition-colors">CV Writing</a></li>
               <li><a href="#service-cv-review" className="hover:text-black transition-colors">CV Review</a></li>
               <li><a href="#service-linkedin-optimization" className="hover:text-black transition-colors">LinkedIn Optimization</a></li>
+              <li><a href="#faq" className="hover:text-black transition-colors">FAQ</a></li>
             </ul>
           </div>
 

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -5,6 +6,7 @@ import Stats from './components/Stats';
 import Services from './components/Services';
 import Pricing from './components/Pricing';
 import Features from './components/Features';
+import FAQ from './components/FAQ';
 import ContactForm from './components/ContactForm';
 import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
@@ -62,8 +64,11 @@ const App: React.FC = () => {
           <Testimonials />
         </section>
 
-        <section className="py-20 bg-black relative overflow-hidden border-t border-white/5">
-          {/* Subtle ambient light effects for depth without breaking the solid black feel */}
+        <section id="faq" className="py-32 scroll-mt-24 bg-white border-t border-slate-50">
+          <FAQ />
+        </section>
+
+        <section className="py-20 bg-black relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/5 rounded-full blur-[100px]"></div>
             <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-slate-400/5 rounded-full blur-[100px]"></div>
@@ -88,9 +93,7 @@ const App: React.FC = () => {
 
       <Footer />
 
-      {/* Floating Action Buttons */}
       <div className="fixed bottom-8 right-8 flex flex-col gap-4 z-50">
-        {/* WhatsApp Business (Top of the social stack) */}
         <a 
           href="https://wa.me/971508881348" 
           target="_blank" 
@@ -103,7 +106,6 @@ const App: React.FC = () => {
           </svg>
         </a>
 
-        {/* LinkedIn (Below WhatsApp) */}
         <a 
           href="https://www.linkedin.com/company/careerlab-services/" 
           target="_blank" 
@@ -116,20 +118,6 @@ const App: React.FC = () => {
           </svg>
         </a>
 
-        {/* Facebook (Below LinkedIn) */}
-        <a 
-          href="https://www.facebook.com/share/1By736Xjai/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="bg-black p-4 rounded-full shadow-2xl hover:scale-110 active:scale-90 transition-all duration-300 flex items-center justify-center group hover:shadow-blue-600/20"
-          title="Facebook Page"
-        >
-          <svg className="w-6 h-6 text-white fill-current" viewBox="0 0 24 24">
-            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-          </svg>
-        </a>
-
-        {/* Scroll Top Button (At the bottom of the stack) */}
         {showScrollTop && (
           <button 
             onClick={scrollToTop}

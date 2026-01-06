@@ -1,135 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { GoogleGenAI } from "@google/genai";
-
-interface ServiceImageProps {
-  alt: string;
-  prompt: string;
-  fallbackSrc: string;
-  index: number;
-}
-
-const ServiceImage: React.FC<ServiceImageProps> = ({ alt, prompt, fallbackSrc, index }) => {
-  const [imgSrc, setImgSrc] = useState(fallbackSrc);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const hasAttempted = useRef(false);
-
-  const generateImage = async (isManualRetry = false) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Staggered delay: 2.5s per index to respect rate limits
-      if (!isManualRetry) {
-        await new Promise(resolve => setTimeout(resolve, index * 2500));
-      }
-
-      // Initialize with latest key (might have been updated via dialog)
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-image',
-        contents: { parts: [{ text: prompt }] },
-        config: { 
-          imageConfig: { 
-            aspectRatio: "16:9" 
-          } 
-        }
-      });
-
-      const candidate = response.candidates?.[0];
-      if (candidate?.content?.parts) {
-        for (const part of candidate.content.parts) {
-          if (part.inlineData) {
-            setImgSrc(`data:image/png;base64,${part.inlineData.data}`);
-            setLoading(false);
-            return;
-          }
-        }
-      }
-      throw new Error("No image data returned from model");
-    } catch (err: any) {
-      console.error(`AI Image Generation failed for ${alt}:`, err);
-      const msg = err?.message || "";
-      if (msg.includes('429') || msg.includes('RESOURCE_EXHAUSTED')) {
-        setError("Rate limit exceeded. Try again in a moment.");
-      } else {
-        setError("Unable to generate custom graphic.");
-      }
-      setImgSrc(fallbackSrc);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!hasAttempted.current) {
-      hasAttempted.current = true;
-      generateImage();
-    }
-  }, []);
-
-  const handleOpenKeySelector = async () => {
-    try {
-      // Check if user has selected a key, if not open dialog
-      if (typeof window !== 'undefined' && (window as any).aistudio) {
-        await (window as any).aistudio.openSelectKey();
-        // After opening, retry generation
-        generateImage(true);
-      }
-    } catch (e) {
-      console.error("Failed to open key selector", e);
-    }
-  };
-
-  return (
-    <div className="w-full h-full relative overflow-hidden bg-white group/img">
-      {loading && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm">
-          <div className="w-8 h-8 border-2 border-slate-200 border-t-black rounded-full animate-spin mb-3"></div>
-          <p className="text-[9px] font-black uppercase tracking-[0.3em] text-black animate-pulse">Rendering Asset</p>
-        </div>
-      )}
-      
-      {error && !loading && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm p-4 text-center">
-          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4">{error}</p>
-          <div className="flex gap-2">
-            <button 
-              onClick={() => generateImage(true)}
-              className="px-4 py-2 bg-black text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-transform"
-            >
-              Retry
-            </button>
-            <button 
-              onClick={handleOpenKeySelector}
-              className="px-4 py-2 bg-white text-black border border-black rounded-xl text-[9px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-transform"
-            >
-              Use My API Key
-            </button>
-          </div>
-        </div>
-      )}
-
-      <img 
-        src={imgSrc} 
-        alt={alt} 
-        className={`w-full h-full object-cover transition-transform duration-700 ease-out ${loading ? 'blur-xl scale-105 opacity-30' : 'group-hover:scale-110 opacity-100'}`} 
-      />
-      
-      {!loading && !error && (
-        <button 
-          onClick={() => generateImage(true)}
-          className="absolute bottom-4 right-4 z-20 opacity-0 group-hover/img:opacity-100 transition-opacity bg-white/90 backdrop-blur-md p-2 rounded-lg shadow-lg border border-slate-200 hover:bg-black hover:text-white"
-          title="Regenerate Image"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-        </button>
-      )}
-    </div>
-  );
-};
+import React from 'react';
+import ServiceImage from './ServiceImage';
 
 const services = [
   {
@@ -146,7 +16,7 @@ const services = [
     ],
     fallback: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=800",
     buttonText: "Build My Perfect CV",
-    prompt: `ISOMETRIC AND 2D minimalist flat vector illustration. STRICT BLACK AND WHITE PALETTE. Pure black line art on white background. Composition: A human silhouette standing next to a large structured CV document. A friendly robot assistant is nearby using a digital pen to write and optimize the content. High contrast, clean geometric lines, professional SaaS editorial style. No colors, no gradients, no gray.`
+    prompt: `ISOMETRIC AND 2D minimalist flat vector illustration. STRICT BLACK AND WHITE PALETTE. Pure black line art on white background. Composition: A human silhouette standing next to a large structured CV document. A friendly robot assistant is nearby using a digital pen to write and optimize the content. High contrast, clean geometric lines, professional SaaS editorial style.`
   },
   {
     id: "service-cv-review",
@@ -162,7 +32,7 @@ const services = [
     ],
     fallback: "https://images.unsplash.com/photo-1454165833767-027ffea9e61c?auto=format&fit=crop&q=80&w=800",
     buttonText: "Review My CV",
-    prompt: `ISOMETRIC AND 2D minimalist flat vector illustration. STRICT BLACK AND WHITE PALETTE. Pure black line art on white background. Composition: A large magnifying glass hovering over a CV document. A floating checklist dashboard with scoring meters and validation marks. Analytical feedback loop visualization with data nodes. High contrast, clean geometric lines, professional SaaS editorial style. No colors, no gradients, no gray.`
+    prompt: `ISOMETRIC AND 2D minimalist flat vector illustration. STRICT BLACK AND WHITE PALETTE. Pure black line art on white background. Composition: A large magnifying glass hovering over a CV document. A floating checklist dashboard with scoring meters and validation marks. Analytical feedback loop visualization.`
   },
   {
     id: "service-linkedin-optimization",
@@ -178,7 +48,7 @@ const services = [
     ],
     fallback: "https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&q=80&w=800",
     buttonText: "Optimize My LinkedIn",
-    prompt: `ISOMETRIC AND 2D minimalist flat vector illustration. STRICT BLACK AND WHITE PALETTE. Pure black line art on white background. Composition: A human silhouette standing next to a professional profile frame containing the LinkedIn logo. Foreground: A robot assistant is polishing a networking node with floating signal waves, search visibility icons, and ranking arrows. High contrast, clean geometric lines, professional SaaS editorial style. No colors, no gradients, no gray.`
+    prompt: `ISOMETRIC AND 2D minimalist flat vector illustration. STRICT BLACK AND WHITE PALETTE. Pure black line art on white background. Composition: A human silhouette standing next to a professional profile frame containing the LinkedIn logo. Foreground: A robot assistant is polishing a networking node.`
   }
 ];
 
