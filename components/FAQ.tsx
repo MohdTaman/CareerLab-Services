@@ -59,7 +59,7 @@ const FAQ: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-6">
       <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-5xl font-black text-black mb-4 uppercase tracking-tighter">
+        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-br from-black to-slate-600">
           Questions & Answers
         </h2>
         <p className="text-slate-500 text-lg font-medium">

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Currency } from '../types';
 
@@ -47,8 +48,8 @@ const pricingData = [
   },
   {
     name: "LinkedIn Pro",
-    priceAED: 250,
-    priceUSD: 68,
+    priceAED: 325,
+    priceUSD: 88,
     delivery: "3–5 Business Days",
     deliverables: [
       "SEO-Driven Headline Design",
