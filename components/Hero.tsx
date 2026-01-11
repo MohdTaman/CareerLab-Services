@@ -53,8 +53,8 @@ const Hero: React.FC = () => {
           </div>
           
           {/* Main Massive Heading */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-sans font-black mb-8 leading-[0.9] tracking-tighter whitespace-nowrap text-black">
-            Professional <span className="text-slate-500/80">CV & LinkedIn</span> Services
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-sans font-black mb-8 leading-[1.1] md:leading-[1.1] tracking-tighter text-black">
+            Professional <span className="text-slate-500/80 border border-black rounded-[2rem] md:rounded-[4rem] px-4 md:px-10 py-1 md:py-3 mx-1 md:mx-3 inline-block align-middle transform -translate-y-1 md:-translate-y-2 whitespace-nowrap">CV & LinkedIn</span> Services
           </h1>
           
           {/* Large Supporting Copy */}

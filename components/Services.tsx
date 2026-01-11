@@ -1,6 +1,5 @@
 
 import React from 'react';
-import ServiceImage from './ServiceImage';
 
 const services = [
   {
@@ -15,8 +14,15 @@ const services = [
       "Modern Professional Layout",
       "Unlimited Revisions (7 Days)"
     ],
-    image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=800",
-    prompt: "Isometric 2D black and white vector illustration of a professional CV being crafted. Features a sleek document with bold sections, a minimalist fountain pen, and abstract blocks representing career achievements being placed onto the layout. Flat design, clean bold lines, high contrast, isolated on white background.",
+    icon: (
+      <svg className="w-24 h-24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v6a1 1 0 001 1h6" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 13h6" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 17h3" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 13l2 2-2 2" />
+      </svg>
+    ),
     buttonText: "Build My Perfect CV"
   },
   {
@@ -31,8 +37,14 @@ const services = [
       "Readability Improvements",
       "Actionable Recommendations"
     ],
-    image: "https://images.unsplash.com/photo-1454165833767-027ffea9e61c?auto=format&fit=crop&q=80&w=800",
-    prompt: "Isometric 2D black and white vector illustration of a professional CV under review. Features a magnifying glass with a checkmark over a document, a checklist on a card showing career sections with checkmarks, and a circular score badge displaying '95 GOOD'. Flat design, clean bold lines, high contrast, isolated on white background.",
+    icon: (
+      <svg className="w-24 h-24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 14l2 2 4-4" />
+        <circle cx="18" cy="18" r="3" strokeWidth="1.5" />
+        <path d="M20.5 20.5l1.5 1.5" strokeLinecap="round" />
+      </svg>
+    ),
     buttonText: "Review My CV"
   },
   {
@@ -47,8 +59,13 @@ const services = [
       "Personal Branding Enhancement",
       "Engagement Optimization"
     ],
-    image: "https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&q=80&w=800",
-    prompt: "Isometric 2D black and white vector illustration of a professional social networking profile. Features a profile silhouette, nodes of connectivity spreading out to represent a global network, and stars highlighting an 'All-Star' profile rating. Flat design, clean bold lines, high contrast, isolated on white background.",
+    icon: (
+      <svg className="w-24 h-24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 11c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 13c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z" />
+        <circle cx="19" cy="7" r="3" strokeWidth="1.5" />
+        <path d="M19 4v6M16 7h6" strokeLinecap="round" strokeWidth="1.5" />
+      </svg>
+    ),
     buttonText: "Optimize My LinkedIn"
   }
 ];
@@ -70,15 +87,20 @@ const Services: React.FC = () => {
             id={service.id}
             className="bg-white rounded-[2.5rem] overflow-hidden flex flex-col group transition-all duration-500 ease-in-out hover:-translate-y-4 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] glow-card border border-black scroll-mt-32"
           >
-            <div className="h-72 overflow-hidden relative border-b border-black/5 bg-white">
-              <div className="absolute inset-0 bg-black/[0.02] group-hover:bg-transparent transition-colors duration-500 z-10"></div>
-              
-              <ServiceImage 
-                alt={service.title}
-                prompt={service.prompt}
-                fallbackSrc={service.image}
-                index={idx}
-              />
+            <div className="h-72 flex items-center justify-center relative border-b border-black/5 bg-slate-50/50 group-hover:bg-white transition-colors duration-500 overflow-hidden">
+              {/* Background accent */}
+              <div className="absolute inset-0 opacity-[0.03] text-black pointer-events-none group-hover:scale-110 transition-transform duration-1000">
+                <svg className="w-full h-full" viewBox="0 0 100 100">
+                   <pattern id={`pattern-${idx}`} x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                     <circle cx="2" cy="2" r="1" fill="currentColor" />
+                   </pattern>
+                   <rect width="100" height="100" fill={`url(#pattern-${idx})`} />
+                </svg>
+              </div>
+
+              <div className="relative z-10 text-black transform group-hover:scale-110 group-hover:rotate-2 transition-all duration-500 animate-float">
+                {service.icon}
+              </div>
               
               <div className="absolute top-6 left-6 z-20">
                 <span className="px-4 py-1.5 rounded-full bg-black text-white text-[10px] font-bold uppercase tracking-widest shadow-lg transition-transform duration-500 group-hover:scale-110">

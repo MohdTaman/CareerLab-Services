@@ -99,7 +99,7 @@ const App: React.FC = () => {
               <h2 className="text-3xl md:text-5xl font-bold mb-4 text-black tracking-tight">
                 Start Your Transformation
               </h2>
-              <p className="text-slate-500 max-w-2xl mx-auto text-lg font-medium">Complete the form below to initiate your professional career optimization process.</p>
+              <p className="text-black max-w-2xl mx-auto text-lg font-medium">Complete the form below to initiate your professional career optimization process.</p>
             </div>
             <ContactForm initialCurrency={currency} />
           </div>
