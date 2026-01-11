@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Stats from './components/Stats';
@@ -11,6 +11,49 @@ import ContactForm from './components/ContactForm';
 import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import { Currency } from './types';
+
+const GlobalGalaxyBackground: React.FC = () => {
+  const stars = useMemo(() => {
+    return Array.from({ length: 80 }).map((_, i) => ({
+      id: i,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      size: Math.random() * 2 + 1,
+      delay: `${Math.random() * 5}s`,
+      duration: `${3 + Math.random() * 4}s`,
+    }));
+  }, []);
+
+  return (
+    <div className="galaxy-container" aria-hidden="true">
+      {/* Nebula Base Glows */}
+      <div className="absolute top-[-10%] left-[-5%] w-[70%] h-[70%] bg-indigo-100/30 rounded-full blur-[120px] animate-nebula"></div>
+      <div className="absolute bottom-[-10%] right-[-5%] w-[60%] h-[60%] bg-violet-100/20 rounded-full blur-[140px] animate-nebula" style={{ animationDelay: '-5s' }}></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50%] h-[50%] bg-slate-100/40 rounded-full blur-[160px]"></div>
+
+      {/* Orbital Paths */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] border border-slate-200/10 rounded-full opacity-30"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] border border-slate-200/5 rounded-full opacity-20"></div>
+
+      {/* Persistent Twinkling Stars */}
+      {stars.map((star) => (
+        <div
+          key={star.id}
+          className="absolute bg-slate-400 rounded-full animate-twinkle opacity-0"
+          style={{
+            top: star.top,
+            left: star.left,
+            width: `${star.size}px`,
+            height: `${star.size}px`,
+            // @ts-ignore
+            '--delay': star.delay,
+            '--duration': star.duration,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 const App: React.FC = () => {
   const [currency, setCurrency] = useState<Currency>(Currency.USD);
@@ -29,29 +72,31 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white selection:bg-slate-200 selection:text-black">
+    <div className="min-h-screen selection:bg-slate-200 selection:text-black flex flex-col relative">
+      <GlobalGalaxyBackground />
       <Navbar />
       
-      <main>
+      <main className="flex-grow">
         <Hero />
+        
         <Stats />
         
-        <section id="services" className="py-24 scroll-mt-24">
+        <section id="services" className="py-24 scroll-mt-24 glass-section">
           <Services />
         </section>
 
-        <section id="pricing" className="py-24 bg-slate-50 scroll-mt-24">
+        <section id="pricing" className="py-24 scroll-mt-24 glass-section-dark border-y border-slate-200/10">
           <Pricing currency={currency} onCurrencyToggle={() => setCurrency(prev => prev === Currency.AED ? Currency.USD : Currency.AED)} />
         </section>
 
-        <section id="features" className="py-24 scroll-mt-24">
+        <section id="features" className="py-24 scroll-mt-24 glass-section">
           <Features />
         </section>
 
-        <section id="get-started" className="py-24 bg-slate-100 scroll-mt-24">
+        <section id="get-started" className="py-24 scroll-mt-24 glass-section-dark border-y border-slate-200/5">
           <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 text-black">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 text-black tracking-tight">
                 Start Your Transformation
               </h2>
               <p className="text-slate-500 max-w-2xl mx-auto text-lg font-medium">Complete the form below to initiate your professional career optimization process.</p>
@@ -60,22 +105,22 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section className="py-24">
+        <section className="py-24 glass-section">
           <Testimonials />
         </section>
 
-        <section id="faq" className="py-32 scroll-mt-24 bg-white border-t border-slate-50">
+        <section id="faq" className="py-32 scroll-mt-24 border-t border-slate-200/10 glass-section">
           <FAQ />
         </section>
 
-        <section className="py-20 bg-black relative overflow-hidden">
+        <section className="py-20 bg-black/90 relative overflow-hidden backdrop-blur-md">
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/5 rounded-full blur-[100px]"></div>
             <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-slate-400/5 rounded-full blur-[100px]"></div>
           </div>
 
           <div className="max-w-[1600px] mx-auto px-6 lg:px-12 text-center relative z-10">
-            <h2 className="text-2xl md:text-5xl font-black mb-4 text-white">
+            <h2 className="text-2xl md:text-5xl font-bold mb-4 text-white tracking-tight">
               Ready to Transform Your Career?
             </h2>
             <p className="text-slate-400 mb-8 text-lg max-w-2xl mx-auto font-medium leading-relaxed">
@@ -83,9 +128,14 @@ const App: React.FC = () => {
             </p>
             <button 
               onClick={() => document.getElementById('get-started')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-10 py-4 bg-white text-black rounded-full font-black text-sm uppercase tracking-widest transition-all duration-300 hover:scale-[1.05] active:scale-[0.97] hover:shadow-[0_0_50px_rgba(255,255,255,0.4)] shadow-xl"
+              className="px-10 py-4 bg-white text-black rounded-full font-bold text-sm uppercase tracking-widest transition-all duration-300 hover:scale-[1.05] active:scale-[0.97] hover:shadow-[0_0_50px_rgba(255,255,255,0.4)] shadow-xl group"
             >
-              Get Started Today
+              <span className="flex items-center gap-2">
+                Get Started Today
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </span>
             </button>
           </div>
         </section>

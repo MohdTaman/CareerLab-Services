@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ServiceImage from './ServiceImage';
 
@@ -14,9 +15,9 @@ const services = [
       "Modern Professional Layout",
       "Unlimited Revisions (7 Days)"
     ],
-    fallback: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=800",
-    buttonText: "Build My Perfect CV",
-    prompt: `ISOMETRIC AND 2D minimalist flat vector illustration. STRICT BLACK AND WHITE PALETTE. Pure black line art on white background. Composition: A human silhouette standing next to a large structured CV document. A friendly robot assistant is nearby using a digital pen to write and optimize the content. High contrast, clean geometric lines, professional SaaS editorial style.`
+    image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=800",
+    prompt: "Isometric 2D black and white vector illustration of a professional CV being crafted. Features a sleek document with bold sections, a minimalist fountain pen, and abstract blocks representing career achievements being placed onto the layout. Flat design, clean bold lines, high contrast, isolated on white background.",
+    buttonText: "Build My Perfect CV"
   },
   {
     id: "service-cv-review",
@@ -30,9 +31,9 @@ const services = [
       "Readability Improvements",
       "Actionable Recommendations"
     ],
-    fallback: "https://images.unsplash.com/photo-1454165833767-027ffea9e61c?auto=format&fit=crop&q=80&w=800",
-    buttonText: "Review My CV",
-    prompt: `ISOMETRIC AND 2D minimalist flat vector illustration. STRICT BLACK AND WHITE PALETTE. Pure black line art on white background. Composition: A large magnifying glass hovering over a CV document. A floating checklist dashboard with scoring meters and validation marks. Analytical feedback loop visualization.`
+    image: "https://images.unsplash.com/photo-1454165833767-027ffea9e61c?auto=format&fit=crop&q=80&w=800",
+    prompt: "Isometric 2D black and white vector illustration of a professional CV under review. Features a magnifying glass with a checkmark over a document, a checklist on a card showing career sections with checkmarks, and a circular score badge displaying '95 GOOD'. Flat design, clean bold lines, high contrast, isolated on white background.",
+    buttonText: "Review My CV"
   },
   {
     id: "service-linkedin-optimization",
@@ -46,9 +47,9 @@ const services = [
       "Personal Branding Enhancement",
       "Engagement Optimization"
     ],
-    fallback: "https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&q=80&w=800",
-    buttonText: "Optimize My LinkedIn",
-    prompt: `ISOMETRIC AND 2D minimalist flat vector illustration. STRICT BLACK AND WHITE PALETTE. Pure black line art on white background. Composition: A human silhouette standing next to a professional profile frame containing the LinkedIn logo. Foreground: A robot assistant is polishing a networking node.`
+    image: "https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&q=80&w=800",
+    prompt: "Isometric 2D black and white vector illustration of a professional social networking profile. Features a profile silhouette, nodes of connectivity spreading out to represent a global network, and stars highlighting an 'All-Star' profile rating. Flat design, clean bold lines, high contrast, isolated on white background.",
+    buttonText: "Optimize My LinkedIn"
   }
 ];
 
@@ -56,7 +57,7 @@ const Services: React.FC = () => {
   return (
     <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
       <div className="text-center mb-20">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-br from-black to-slate-600">
+        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-black tracking-tight">
           Our Premium Services
         </h2>
         <p className="text-slate-600 max-w-2xl mx-auto text-lg font-medium leading-relaxed">Expertly crafted career solutions designed for the modern job market.</p>
@@ -71,14 +72,16 @@ const Services: React.FC = () => {
           >
             <div className="h-72 overflow-hidden relative border-b border-black/5 bg-white">
               <div className="absolute inset-0 bg-black/[0.02] group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+              
               <ServiceImage 
-                alt={service.title} 
-                prompt={service.prompt} 
-                fallbackSrc={service.fallback} 
+                alt={service.title}
+                prompt={service.prompt}
+                fallbackSrc={service.image}
                 index={idx}
               />
+              
               <div className="absolute top-6 left-6 z-20">
-                <span className="px-4 py-1.5 rounded-full bg-black text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-transform duration-500 group-hover:scale-110">
+                <span className="px-4 py-1.5 rounded-full bg-black text-white text-[10px] font-bold uppercase tracking-widest shadow-lg transition-transform duration-500 group-hover:scale-110">
                   {service.tagline}
                 </span>
               </div>
@@ -95,8 +98,13 @@ const Services: React.FC = () => {
               <ul className="space-y-4 mb-10">
                 {service.features.map((feat, fIdx) => (
                   <li key={fIdx} className="flex items-center gap-4 text-sm text-slate-600 group/item">
-                    <div className="w-6 h-6 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all duration-300 shadow-sm border border-black/5">
-                      <svg className="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <div className="w-6 h-6 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all duration-500 shadow-sm border border-black/5 transform-gpu group-hover:scale-110">
+                      <svg 
+                        aria-hidden="true" 
+                        className="w-3.5 h-3.5 flex-shrink-0 transition-all duration-500 transform-gpu group-hover:scale-125 group-hover:rotate-[12deg]" 
+                        fill="currentColor" 
+                        viewBox="0 0 20 20"
+                      >
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -107,7 +115,7 @@ const Services: React.FC = () => {
               
               <button 
                 onClick={() => document.getElementById('get-started')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-full py-5 bg-slate-50 hover:bg-black text-slate-800 hover:text-white border border-slate-200 hover:border-black rounded-2xl font-black text-sm uppercase tracking-widest transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-lg"
+                className="w-full py-5 bg-black text-white rounded-2xl font-bold text-sm uppercase tracking-widest transition-all duration-300 hover:bg-slate-800 hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-black/20 hover:shadow-black/30"
               >
                 {service.buttonText}
               </button>

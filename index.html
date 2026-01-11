@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +14,8 @@
           theme: {
             extend: {
               fontFamily: {
-                sans: ['"Helvetica Now Display"', 'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
-                display: ['"Helvetica Now Display"', 'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                display: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
               },
             },
           },
@@ -22,54 +23,106 @@
     </script>
     <style>
         body {
-            font-family: "Helvetica Now Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            background-color: #ffffff;
         }
 
-        /* Enforce global font-family consistency across all UI elements */
-        h1, h2, h3, h4, h5, h6, p, span, li, input, button, textarea, select, a {
-            font-family: "Helvetica Now Display", "Inter", sans-serif;
-        }
-
-        /* Precise kerning for high-end display feel */
-        h1, h2, h3, h4, .font-display, .font-bold, .font-black, .font-extrabold {
-            letter-spacing: -0.04em;
-        }
-
-        p, .font-medium {
-            letter-spacing: -0.01em;
-        }
-
-        .gradient-bg {
+        /* Global Galaxy Background Container */
+        .galaxy-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
             background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f1f5f9 100%);
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.8);
+
+        /* Twinkling Animation */
+        @keyframes twinkle {
+          0%, 100% { opacity: 0; transform: scale(0.5); }
+          50% { opacity: 0.6; transform: scale(1.2); }
+        }
+
+        /* Nebula Drift Animation */
+        @keyframes nebula-drift {
+          0% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(2%, 3%) scale(1.1); }
+          66% { transform: translate(-1%, 2%) scale(1.05); }
+          100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* Orbit Animation */
+        @keyframes orbit {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        .animate-nebula {
+            animation: nebula-drift 20s ease-in-out infinite;
+        }
+
+        .animate-twinkle {
+            animation: twinkle var(--duration, 3s) ease-in-out var(--delay, 0s) infinite;
+        }
+
+        /* Glassmorphism Sections */
+        .glass-section {
+            background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            -webkit-backdrop-filter: blur(12px);
         }
-        .glow-card {
-            position: relative;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+        .glass-section-dark {
+            background: rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
-        .glow-card:hover {
-            border-color: rgba(0, 0, 0, 0.2);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+
+        /* Existing Animations */
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
         }
-        .glow-card-dark {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        @keyframes scan {
+          0%, 100% { transform: translateY(-4px); opacity: 0.6; }
+          50% { transform: translateY(4px); opacity: 1; }
         }
-        .glow-card-dark:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        @keyframes pulse-gentle {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.1); opacity: 0.8; }
         }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes secure-shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-1px); }
+          75% { transform: translateX(1px); }
+        }
+        @keyframes bolt-flash {
+          0%, 100% { opacity: 1; transform: skewX(0deg); }
+          20% { opacity: 0.7; transform: skewX(-10deg); }
+          40% { opacity: 1; transform: skewX(5deg); }
+        }
+
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-scan { animation: scan 2s ease-in-out infinite; }
+        .animate-pulse-gentle { animation: pulse-gentle 4s ease-in-out infinite; }
+        .animate-spin-slow { animation: spin-slow 12s linear infinite; }
+        .animate-secure-shake { animation: secure-shake 1s ease-in-out infinite; }
+        .animate-bolt-flash { animation: bolt-flash 1.5s ease-in-out infinite; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 <script type="importmap">
 {
@@ -82,7 +135,7 @@
 }
 </script>
 </head>
-<body class="bg-[#ffffff] text-slate-900">
+<body>
     <div id="root"></div>
 </body>
 </html>

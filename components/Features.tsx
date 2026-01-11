@@ -74,7 +74,7 @@ const Features: React.FC = () => {
   return (
     <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
       <div className="text-center mb-24">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-br from-black to-slate-600">
+        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-black tracking-tight">
           What Sets Us Apart
         </h2>
         <p className="text-slate-500 max-w-2xl mx-auto text-lg font-medium">Engineered for your success in the competitive global job market.</p>
@@ -82,8 +82,8 @@ const Features: React.FC = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-y-16 gap-x-12">
         {features.map((feature, idx) => (
-          <div key={idx} className="flex flex-col items-center text-center group">
-            <div className="mb-6 text-slate-300 group-hover:text-black transition-all duration-500 transform group-hover:scale-110">
+          <div key={idx} className="flex flex-col items-center text-center group cursor-default">
+            <div className="mb-6 text-slate-300 group-hover:text-black transition-all duration-700 ease-out transform-gpu group-hover:scale-125 group-hover:rotate-[12deg] group-hover:-translate-y-2">
               {feature.icon}
             </div>
             <h3 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight group-hover:text-black transition-colors duration-300">
