@@ -7,13 +7,20 @@ interface ServiceImageProps {
   prompt: string;
   fallbackSrc: string;
   index: number;
+  aspectRatio?: "1:1" | "16:9" | "4:3" | "3:4" | "9:16";
 }
 
 const MAX_RETRIES = 2;
 // Global flag to track if we've hit a quota limit to prevent other instances from trying
 let globalQuotaExhausted = false;
 
-const ServiceImage: React.FC<ServiceImageProps> = ({ alt, prompt, fallbackSrc, index }) => {
+const ServiceImage: React.FC<ServiceImageProps> = ({ 
+  alt, 
+  prompt, 
+  fallbackSrc, 
+  index,
+  aspectRatio = "1:1"
+}) => {
   const [imgSrc, setImgSrc] = useState(fallbackSrc);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -75,7 +82,7 @@ const ServiceImage: React.FC<ServiceImageProps> = ({ alt, prompt, fallbackSrc, i
         contents: { parts: [{ text: prompt }] },
         config: { 
           imageConfig: { 
-            aspectRatio: "16:9" 
+            aspectRatio: aspectRatio 
           } 
         }
       });
@@ -140,7 +147,7 @@ const ServiceImage: React.FC<ServiceImageProps> = ({ alt, prompt, fallbackSrc, i
   }, [isQuotaExhausted]);
 
   return (
-    <div className="w-full h-full relative overflow-hidden bg-slate-50 group/img border-l border-black/5">
+    <div className="w-full h-full relative overflow-hidden bg-white group/img border-l border-black/5">
       {loading && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm px-6">
           <div className="w-8 h-8 border-[3px] border-slate-100 border-t-black rounded-full animate-spin mb-4"></div>
@@ -166,7 +173,7 @@ const ServiceImage: React.FC<ServiceImageProps> = ({ alt, prompt, fallbackSrc, i
       <img 
         src={imgSrc} 
         alt={alt} 
-        className={`w-full h-full object-cover transition-all duration-1000 ease-out select-none ${loading ? 'blur-2xl scale-110 opacity-30' : 'group-hover:scale-105 opacity-100'}`} 
+        className={`w-full h-full object-contain transition-all duration-1000 ease-out select-none ${loading ? 'blur-2xl scale-110 opacity-30' : 'group-hover:scale-105 opacity-100'}`} 
       />
       
       {!loading && !isQuotaExhausted && (

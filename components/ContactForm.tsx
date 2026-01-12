@@ -179,8 +179,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ initialCurrency }) => {
             </div>
           </div>
 
-          {/* Branding signature in bottom-left: Horizontally Aligned, Refined Size, Solid Black */}
-          <div className="mt-auto pt-20 flex flex-row items-center gap-2 opacity-100 cursor-default select-none group">
+          {/* Branding signature in bottom-left: Horizontally Aligned, Perfectly Spaced, Solid Black */}
+          <div className="mt-auto pt-20 flex flex-row items-center gap-1 opacity-100 cursor-default select-none group">
             <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center text-black transition-transform duration-500 group-hover:scale-110">
               <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M30 25 H70 L90 45 L50 90 L10 45 Z" />
@@ -194,7 +194,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ initialCurrency }) => {
                 <path d="M70 25 L90 45" />
               </svg>
             </div>
-            <span className="text-5xl md:text-6xl font-black text-black tracking-tighter leading-none transition-transform duration-500 group-hover:translate-x-2">CareerLab</span>
+            <span className="text-5xl md:text-6xl font-black text-black tracking-tighter leading-none transition-transform duration-500 group-hover:translate-x-1">CareerLab</span>
           </div>
         </div>
 

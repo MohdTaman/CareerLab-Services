@@ -1,5 +1,6 @@
 
 import React from 'react';
+import ServiceImage from './ServiceImage';
 
 const services = [
   {
@@ -15,13 +16,13 @@ const services = [
       "Unlimited Revisions (7 Days)"
     ],
     icon: (
-      <svg className="w-24 h-24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v6a1 1 0 001 1h6" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 13h6" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 17h3" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 13l2 2-2 2" />
-      </svg>
+      <ServiceImage 
+        index={0}
+        alt="CV Writing Service Visualization"
+        aspectRatio="1:1"
+        prompt="Create a clean, flat vector illustration in a black, white, and gray monochrome palette. Main Composition: Center a rounded black square badge with smooth corners. Inside the badge: Large bold white letters 'CV' at the top. The word 'WRITING' below it in uppercase, sans-serif, evenly spaced, smaller than 'CV'. Typography: modern, minimal, and professional. Top Element: Above and slightly overlapping the badge, add a horizontal pill-shaped label in light gray with text 'AI POWERED' in bold uppercase sans-serif. Add a small curved decorative squiggle above. Supporting Elements: Bottom-left of badge, a cute cartoon robot head (rounded, friendly smile, dark visor, antenna). Left: checkmark in circle. Right: large mouse cursor pointing toward badge. Around: small abstract squiggles. Style: Flat UI, no gradients, no textures, no realism, smooth edges, white background. Palette: Black, White, Light gray, Dark gray."
+        fallbackSrc="https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=400"
+      />
     ),
     buttonText: "Build My Perfect CV"
   },
@@ -98,7 +99,7 @@ const Services: React.FC = () => {
                 </svg>
               </div>
 
-              <div className="relative z-10 text-black transform group-hover:scale-110 group-hover:rotate-2 transition-all duration-500 animate-float">
+              <div className="relative z-10 text-black transform group-hover:scale-110 group-hover:rotate-2 transition-all duration-500 animate-float w-full h-full flex items-center justify-center">
                 {service.icon}
               </div>
               

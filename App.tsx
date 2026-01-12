@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Stats from './components/Stats';
@@ -13,6 +13,21 @@ import Footer from './components/Footer';
 import { Currency } from './types';
 
 const GlobalGalaxyBackground: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        // Using requestAnimationFrame for maximum smoothness
+        const scrollY = window.scrollY;
+        containerRef.current.style.setProperty('--scroll-y', `${scrollY}px`);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const stars = useMemo(() => {
     return Array.from({ length: 80 }).map((_, i) => ({
       id: i,
@@ -25,32 +40,52 @@ const GlobalGalaxyBackground: React.FC = () => {
   }, []);
 
   return (
-    <div className="galaxy-container" aria-hidden="true">
-      {/* Nebula Base Glows */}
-      <div className="absolute top-[-10%] left-[-5%] w-[70%] h-[70%] bg-indigo-100/30 rounded-full blur-[120px] animate-nebula"></div>
-      <div className="absolute bottom-[-10%] right-[-5%] w-[60%] h-[60%] bg-violet-100/20 rounded-full blur-[140px] animate-nebula" style={{ animationDelay: '-5s' }}></div>
+    <div ref={containerRef} className="galaxy-container" aria-hidden="true">
+      {/* Nebula Base Glows with Parallax */}
+      <div 
+        className="absolute top-[-10%] left-[-5%] w-[70%] h-[70%] bg-indigo-100/30 rounded-full blur-[120px] animate-nebula"
+        style={{ transform: 'translateY(calc(var(--scroll-y, 0px) * 0.15))' }}
+      ></div>
+      <div 
+        className="absolute bottom-[-10%] right-[-5%] w-[60%] h-[60%] bg-violet-100/20 rounded-full blur-[140px] animate-nebula" 
+        style={{ 
+          animationDelay: '-5s',
+          transform: 'translateY(calc(var(--scroll-y, 0px) * -0.1))' 
+        }}
+      ></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50%] h-[50%] bg-slate-100/40 rounded-full blur-[160px]"></div>
 
-      {/* Orbital Paths */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] border border-slate-200/10 rounded-full opacity-30"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] border border-slate-200/5 rounded-full opacity-20"></div>
+      {/* Orbital Paths with subtle parallax */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] border border-slate-200/10 rounded-full opacity-30"
+        style={{ transform: 'translate(-50%, calc(-50% + var(--scroll-y, 0px) * 0.05))' }}
+      ></div>
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] border border-slate-200/5 rounded-full opacity-20"
+        style={{ transform: 'translate(-50%, calc(-50% + var(--scroll-y, 0px) * 0.02))' }}
+      ></div>
 
-      {/* Persistent Twinkling Stars */}
-      {stars.map((star) => (
-        <div
-          key={star.id}
-          className="absolute bg-slate-400 rounded-full animate-twinkle opacity-0"
-          style={{
-            top: star.top,
-            left: star.left,
-            width: `${star.size}px`,
-            height: `${star.size}px`,
-            // @ts-ignore
-            '--delay': star.delay,
-            '--duration': star.duration,
-          }}
-        />
-      ))}
+      {/* Persistent Twinkling Stars container with its own shift */}
+      <div 
+        className="absolute inset-0"
+        style={{ transform: 'translateY(calc(var(--scroll-y, 0px) * 0.03))' }}
+      >
+        {stars.map((star) => (
+          <div
+            key={star.id}
+            className="absolute bg-slate-400 rounded-full animate-twinkle opacity-0"
+            style={{
+              top: star.top,
+              left: star.left,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              // @ts-ignore
+              '--delay': star.delay,
+              '--duration': star.duration,
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 };
